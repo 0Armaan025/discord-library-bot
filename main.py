@@ -1,37 +1,24 @@
-#importing required modules
-import os
 import discord
 from discord.ext import commands
- 
-#enabling all intents 
-intent = discord.Intents().all()
-#deciding when the bot responds
-bot = commands.Bot(command_prefix="!", intents=intent)
-  
-#first event :logging in
+
+
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix='$', intents=intents)
+
 @bot.event
 async def on_ready():
-  #displaying that the bot has logged in
-  print("successful login as {0.user}".format(bot))
- 
-#defining the class for creating a button
-class Invitebutton(discord.ui.View):
-  #creating the button function
-  def __init__(self, inv: str):
-    super().__init__()
-    #collecting the url of the current server
-    self.inv=inv
-    self.add_item(discord.ui.Button(label="Invite link", url=self.inv))
-  #features of the button
-  @discord.ui.button(label="Invite", style=discord.ButtonStyle.blurple)
-  async def invite(self, interaction: discord.Interaction , button : discord.ui.Button):
-    await interaction.response.send_message(self.inv,ephemeral=True)
- 
-#defining command of the bot
+    print(f'We have logged in as {bot.user}')
+
 @bot.command()
-async def invite(ctx: commands.Context):
-  inv=await ctx.channel.create_invite()
-  await ctx.send("click to invite!", view=Invitebutton(str(inv)))
-  
-#getting the secret token
-bot.run(os.getenv('token'))
+async def test(ctx):
+    await ctx.send('testing 1 2 3')
+
+@bot.command(aliases=['hello', 'hi', 'sup'])
+async def howdy(ctx):
+    await ctx.send(f'Howdy! How is it going? {ctx.author.mention}\nMaybe you can read a book? 👀,\n Type ``$read-book`` to get started with your session')
+
+@bot.command(aliases=['bye', 'sayonara','cya','goodbye'])
+async def farewell(ctx):
+    await ctx.send(f'Goodbye! {ctx.author.mention} 🌟\nIt was amazing to have you here today!')    
+
+bot.run('MTI1MjkxNTk1NjAzMjczNzQ2MQ.GMk2Jx.Mi0rwTG6DQlXC65vkjo_bKBfE3vbf6AqUXOlqo')
