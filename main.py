@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='$', intents=intents)
@@ -21,4 +24,4 @@ async def howdy(ctx):
 async def farewell(ctx):
     await ctx.send(f'Goodbye! {ctx.author.mention} 🌟\nIt was amazing to have you here today!')    
 
-bot.run('MTI1MjkxNTk1NjAzMjczNzQ2MQ.GMk2Jx.Mi0rwTG6DQlXC65vkjo_bKBfE3vbf6AqUXOlqo')
+bot.run(os.getenv('token'))
