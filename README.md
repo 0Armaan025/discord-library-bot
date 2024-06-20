@@ -2,6 +2,9 @@
 
 #### Hey there, it's the Discord Library Bot that would help you with Managing your sessions, stopping them, tracking them, checking the leaderboard, getting recommendations for books based on your favorite genre, or searching for the book you always wanted and downloading it with just a single links click.
 
+## You would also need to clone the repo of api, https://github.com/0Armaan025/discord-library-api, install everything (sorry, no req.txt file is there), and run it, then run the bot.
+
+You also should be having .env file with token=_yourtoken_, and ANTHROPIC_API_KEY=keythere
 
 #### Some screenshots of the bot are attached below:
 <br>
