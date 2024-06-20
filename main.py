@@ -7,12 +7,10 @@ import os
 import time
 import uuid
 import json
-from os import environ
-from Bard import Chatbot
+import anthropic
 
-Secure_1PSID = environ.get("BARD__Secure_1PSID")
-Secure_1PSIDTS = environ.get("BARD__Secure_1PSIDTS")
-chatbot = Chatbot(Secure_1PSID, Secure_1PSIDTS)
+client = anthropic.Anthropic()
+
 
 
 start_time = 0
@@ -50,13 +48,38 @@ async def on_ready():
 async def test(ctx):
     await ctx.send('testing 1 2 3')
 
+@bot.command(aliases=['find-book'])
+async def find(ctx):
+    await ctx.send(f"Which book are you looking for? {ctx.author.mention}")
+    book = await bot.wait_for('message', check=lambda m: m.author == ctx.author)
+    book = book.content.strip()
+    # go to the libgen.rs
+
 @bot.command()
 async def recommend(ctx):
     await ctx.send(f"What genre of book are you looking for? {ctx.author.mention}")
     genre = await bot.wait_for('message', check=lambda m: m.author == ctx.author)
     genre = genre.content.strip()
-    response = chatbot.ask('recommend me 5 books in a listview in the genre of ' + genre)
-    await ctx.send(response)
+    message = client.messages.create(
+    model="claude-3-opus-20240229",
+    max_tokens=1000,
+    temperature=0,
+    system="You are an amazing librarian and you help people recommending books",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Please recommend me some books in listview, my favorite genre is: " + genre
+                }
+            ]
+        }
+    ]
+    )
+  
+    await ctx.send(message.content[0].text)
+    
 
 @bot.command(aliases=['hello', 'hi', 'sup'])
 async def howdy(ctx):
