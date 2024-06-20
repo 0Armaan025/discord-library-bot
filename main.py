@@ -323,4 +323,4 @@ async def leaderboard(ctx):
 
     await ctx.send(response)
 
-bot.run(os.getenv('token'))
+bot.run('MTI1MjkxNTk1NjAzMjczNzQ2MQ.G6R8iO.KPyudaXcwCUUSIwElycKDCVPYEoTV-XXrgOpzA')
