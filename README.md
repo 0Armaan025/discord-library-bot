@@ -1,10 +1,10 @@
-![image](https://github.com/0Armaan025/discord-library-bot/assets/104704093/a5126af0-f710-440b-a3cc-4f1f1f85afde)# Discord Library Bot
-# Hey there, it's the Discord Library Bot that would help you with Managing your sessions, stopping them, tracking them, checking the leaderboard, getting recommendations for books based on your favorite genre, or searching for the book you always wanted and downloading it with just a single links click.
+#### Hey there, it's the Discord Library Bot that would help you with Managing your sessions, stopping them, tracking them, checking the leaderboard, getting recommendations for books based on your favorite genre, or searching for the book you always wanted and downloading it with just a single links click.
 
 ## Some screenshots of the bot are attached below:
 
 $howdy
 ![image](https://github.com/0Armaan025/discord-library-bot/assets/104704093/9c27d453-11e0-4a72-8bdd-872d0031c798)
+# Discord Library Bot
 
 $farewell
 ![image](https://github.com/0Armaan025/discord-library-bot/assets/104704093/ea903145-3e3e-4a08-a0f5-9b533a0bbe45)
