@@ -7,6 +7,13 @@ import os
 import time
 import uuid
 import json
+from os import environ
+from Bard import Chatbot
+
+Secure_1PSID = environ.get("BARD__Secure_1PSID")
+Secure_1PSIDTS = environ.get("BARD__Secure_1PSIDTS")
+chatbot = Chatbot(Secure_1PSID, Secure_1PSIDTS)
+
 
 start_time = 0
 
@@ -42,6 +49,14 @@ async def on_ready():
 @bot.command()
 async def test(ctx):
     await ctx.send('testing 1 2 3')
+
+@bot.command()
+async def recommend(ctx):
+    await ctx.send(f"What genre of book are you looking for? {ctx.author.mention}")
+    genre = await bot.wait_for('message', check=lambda m: m.author == ctx.author)
+    genre = genre.content.strip()
+    response = chatbot.ask('recommend me 5 books in a listview in the genre of ' + genre)
+    await ctx.send(response)
 
 @bot.command(aliases=['hello', 'hi', 'sup'])
 async def howdy(ctx):
