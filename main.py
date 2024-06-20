@@ -8,10 +8,9 @@ import time
 import uuid
 import json
 import anthropic
+import requests
 
 client = anthropic.Anthropic()
-
-
 
 start_time = 0
 
@@ -53,7 +52,48 @@ async def find(ctx):
     await ctx.send(f"Which book are you looking for? {ctx.author.mention}")
     book = await bot.wait_for('message', check=lambda m: m.author == ctx.author)
     book = book.content.strip()
-    # go to the libgen.rs
+    embed = discord.Embed(title=f"Search results for '{book}'", description="Here are some books that match your search:", color=discord.Colour.blurple())
+    
+    api_url = f"http://127.0.0.1:5000/get-book/{book}"
+    response = requests.get(api_url)
+    response = response.json()
+    
+    if not response:
+        await ctx.send('Sorry! No books found. Please try another book.')
+    else:
+        count = 0
+        for item in response:
+            if count >= 8:  
+                break
+            
+            title = item['title']
+            author = item['author']
+            year = item['year']
+            language = item['language']
+            download_link = item['file_link']
+            
+            book_info = f"**Author:** {author}\n**Year:** {year}\n**Language:** {language}\n**[Download Link]({download_link})**"
+            embed.add_field(name=title, value=book_info, inline=False)
+            
+            count += 1
+        
+        await ctx.send(embed=embed)
+
+@bot.command(aliases=['help-me'])
+async def help_me(ctx):
+    await ctx.send("So you need help? huh, that means you didn't read the documentation, very bad of you xD")
+    embed = discord.Embed(title="Help", description="Here are some commands that you can use:", color=discord.Colour.dark_magenta())
+    embed.add_field(name="$howdy", value="Greets the user", inline=False)
+    embed.add_field(name="$farewell", value="Says bye to the user", inline=False)
+    embed.add_field(name="$test", value="testing 1 2 3 ", inline=False)
+    embed.add_field(name="$find", value="Helps in finding pdf of a book and downloading it directly", inline=False)
+    embed.add_field(name="$recommend", value="Recommends a book to the user based on genre", inline=False)
+    embed.add_field(name="$read-book", value="Starts your reading session", inline=False)
+    embed.add_field(name="$stop-session", value="Stops your ongoing session", inline=False)
+    embed.add_field(name="$sessions", value="Shows all your sessions yet", inline=False)
+    embed.add_field(name="$leaderboard", value="Shows the leaderboard", inline=False)
+    embed.add_field(name="$total-time", value="Shows your total time", inline=False)
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def recommend(ctx):
@@ -259,6 +299,7 @@ async def on_command_error(ctx, error):
 
 
 bot.remove_command('help')
+
 
 
 @bot.command()
