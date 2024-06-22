@@ -72,12 +72,12 @@ async def find(ctx):
             language = item['language']
             download_link = item['file_link']
             
-            book_info = f"**Author:** {author}\n**Year:** {year}\n**Language:** {language}\n**[Download Link]({download_link})**"
+            book_info = f"**Author:** {author}\n**Year:** {year}\n**Language:** {language}\n)"
             embed.add_field(name=title, value=book_info, inline=False)
             
             count += 1
-        
-        await ctx.send(embed=embed)
+            button = Button(style=ButtonStyle.blue, label="Download", url=download_link)
+            await ctx.send(embed=embed, components=[button])
 
 @bot.command(aliases=['help-me'])
 async def help_me(ctx):
@@ -199,14 +199,11 @@ async def start_reading(ctx):
         print(f"Received author name: {author_name}")
         
         confirmation_message_text = f"Is your book '{book_name}' by '{author_name}'?"
-        confirmation_message = await ctx.send(confirmation_message_text)
+        confirmation_message = await ctx.send(confirmation_message_text, components=[Button(style=ButtonStyle.green, label="Confirm", custom_id="confirm_button")])
         print(f"Sent confirmation message: {confirmation_message_text}")
 
-        await confirmation_message.add_reaction("👍")
-        print("Added thumbs up reaction to confirmation message")
-
         try:
-            reaction, user = await bot.wait_for('reaction_add', timeout=30.0, check=lambda r, u: str(r.emoji) == "👍" and u == ctx.author and r.message.id == confirmation_message.id)
+            interaction = await bot.wait_for('button_click', timeout=30.0, check=lambda i: i.component.custom_id == "confirm_button" and i.user == ctx.author and i.message.id == confirmation_message.id)
             session_id = start_user_session(ctx.author.id, book_name, author_name)
             user_data[user_id_str]['username'] = ctx.author.name
             save_user_data()
