@@ -9,6 +9,7 @@ import uuid
 import json
 import anthropic
 import requests
+from discord_components import DiscordComponents, Button, ButtonStyle
 
 client = anthropic.Anthropic()
 
